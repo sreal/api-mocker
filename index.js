@@ -1,33 +1,25 @@
-var express = require('express');
-var headerCookies = require('./header-cookies');
+var jsonServer = require('json-server')
+var cookieParser = require('cookie-parser');
+var cookieManager = require('./header-cookies-manager');
+var cookieAuth = require('./header-cookies-auth');
 
-var app = express( );
+var server = jsonServer.create()
+var router = jsonServer.router('db.json')
+var middlewares = jsonServer.defaults()
 
-app.set('port', (process.env.PORT || 5000));
-
-app.use(express.static(__dirname + '/static'));
-app.use(headerCookies());
-
-app.set('json', __dirname + '/json');
-
-app.get('/cookie/create/:name/:value', function(request, response) {
-  response.cookie(request.params.name, request.params.value);
-  response.redirect('/');
-});
-app.get('/cookie/create/:name', function(request, response) {
-  response.cookie(request.params.name, 'default-value');
-  response.redirect('/');
-});
-app.get('/cookie/delete/:name', function(request, response) {
-  response.clearCookie(request.params.name);
-  response.redirect('/');
-});
-app.get('/*', function(request, response) {
-  response.send(request.headers);
-});
+server.set('port', (process.env.PORT || 5000));
 
 
+// Add custom cookie middlewares
+server.use(cookieParser());  // needed in cookieParser
+server.use(cookieManager());
+server.use(cookieAuth());
 
-app.listen(app.get('port'), function() {
-  console.log('Try http://localhost:'+app.get('port')+'/');
+// Set default middlewares (logger, static, cors and no-cache)
+server.use(middlewares)
+// Use default router
+server.use(router)
+
+server.listen(server.get('port'), function() {
+  console.log('Try http://localhost:'+server.get('port')+'/');
 });

@@ -1,10 +1,8 @@
 # api-mocker
 
-App to mock an api in Node.js app using [Express 4](http://expressjs.com/).
+Mock api server with cookie auth helpers.
 
 ## Running Locally
-
-Make sure you have [Node.js](http://nodejs.org/) and the [Heroku Toolbelt](https://toolbelt.heroku.com/) installed.
 
 ```sh
 $ git clone <this repo>
@@ -25,12 +23,27 @@ $ heroku open
 
 ## Features
 
-1. Fake cookie authentication controlled in request headers.
+1. Set and Clear cookies
+2. Fake cookie based authentication via the header.
 
+#### Setting/Clearning Headers
 
-## Headers
+Cookies will be set to the value set in the `X-API-Mocker-Set-Cookie` header.
+Cookies will be cleared if the name is set in the `X-API-Mocker-Clear-Cookie` header.
+See: ./header-cookie-manager.js.
+
+These will be processed in the order they are found in the headers. Multiple values can be set.
 
 ```
-header.set('X-API-Faker-Set-Cookie', 'CookieName')
-header.set('X-API-Faker-Destroy-Cookie', 'CookieName')
+header.set('X-API-Mocker-Set-Cookie', '<cookie-name>=<my-cookie-value>')
+header.set('X-API-Mocker-Clear-Cookie', '<cookie-name>')
+```
+
+#### Setting/Clearning Headers
+
+Values in the `X-Api-Mocker-Valid-Value` must be present else the request will return a `401`
+See: ./header-cookie-auth.js
+
+```
+header.set('X-Api-Mocker-Valid-Value', '<cookie-name>=<my-cookie-value>')
 ```
