@@ -36,37 +36,7 @@ function headerCookiesManager(cookiePrefix) {
           response.clearCookie(name); });
       }
 
-      // if ( isSetHeader(headerKey) ) {
-      //   var splitCookie = headers[headerKey].split('=');
-      //   var key = splitCookie[0];
-      //   var val = splitCookie[1] || '';
-      //   response.cookie(key, val);
-      // }
-
-      // if ( isClearHeader(headerKey) ) {
-      //   _.each(headers[headerKey].split(','), function(name) {
-      //     response.clearCookie(name)
-      //   });
-      // }
-
     });
-
-    // for (headerKey in headers) {
-
-    //   if( headers.hasOwnProperty( headerKey ) ) {
-    //     if (headerKey.toLowerCase() === SET_HEADER.toLowerCase()) {
-    //       var splitCookie = headers[headerKey].split('=');
-    //       var key = splitCookie[0];
-    //       var val = splitCookie[1] || '';
-    //       response.cookie(key, val);
-    //     }
-
-    //     if (headerKey.toLowerCase() === CLEAR_HEADER.toLowerCase()) {
-    //       response.clearCookie(headers[headerKey]);
-    //     }
-    //   }
-
-    // }
 
     next();
   };
